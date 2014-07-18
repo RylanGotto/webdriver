@@ -1,0 +1,37 @@
+create_browser, firefox
+submit_text_field, USER_IDENT, superuser
+submit_text_field, _MYPW, 5*Hotel
+click_text_link, Manage the system
+click_text_link, Resources
+click_text_link, Target systems
+click_text_link, Manually defined
+click_button, SUBMIT-ADD.x
+entry_text_field, ID, ACTIVED
+select_dropdown_option, HOSTTYPE, Active Directory
+wait, 1.0
+select_dropdown_option, HOSTTYPE, Active Directory
+entry_text_field, HOSTNAME, sauce of profiles
+entry_text_field, HOSTADDR, 10.0.112.6
+click_check_box, HOSTINCUSR
+click_button, SUBMIT-ADD.x
+wait, 1.0
+entry_text_field, ADMID0, _admsuper
+entry_text_field, ADMPW1-0, 5*Hotel
+entry_text_field, ADMPW2-0, 5*Hotel
+click_button_by_value, Update
+click_button, SUBMIT-TESTCONNECTION:3_CURRENT.x
+click_button, SUBMIT-TESTCRED.x
+wait, 10.0
+click_button, SUBMIT-TESTLIST.x
+wait, 10.0
+click_button, SUBMIT-REFRESH.x
+click_button, SUBMIT-SHOWRESULTS.x
+click_text_link, Maintenance
+click_text_link, Auto discovery
+click_text_link, Execute auto discovery 
+click_button, SUBMIT-CONTINUE.x
+wait, 15.0
+click_text_link, Resources
+click_text_link, Target systems
+click_text_link, Target system summary
+
