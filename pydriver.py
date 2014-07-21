@@ -1,14 +1,14 @@
 import logging 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from pymouse import PyMouse
+from pykeyboard import PyKeyboard
 import time
 
 #"\\input[@name='cams_cb_username' and @tabindex='1']")
 
 class WebDriver:
-	def __init__(self, sizew, sizeh, starturl):
-	    self.window_sizew = sizew
-	    self.window_sizeh = sizeh
+	def __init__(self, starturl):
 	    self.start_url = "http://%s" % starturl
 	    self.driver = None
 
@@ -16,16 +16,14 @@ class WebDriver:
 		self.browser_type = args[0]
 		if self.browser_type == 'firefox':
 			self.driver = webdriver.Firefox()
-			self.driver.set_window_size(self.window_sizew, self.window_sizeh)
-			self.driver.get(self.start_url)
-
 		elif self.browser_type == 'ie':
 			self.driver = webdriver.Ie()
-			self.driver.set_window_size(self.window_sizew, self.window_sizeh)
-			self.driver.get(self.start_url)
+
 		else:
 			errmsg = "invalid browser type"
 			print errmsg
+		self.driver.maximize_window()
+		self.driver.get(self.start_url)
 
 	def back(self):
 		self.driver.back()
@@ -85,4 +83,32 @@ class WebDriver:
 		self.jquery_highlight_inject()
 		dd = self.driver.find_elements_by_xpath("//*[@value='Update']")
 		dd.pop().click()
+
+	# let's get some helper functions up in this biatch
+	def moveslow(self, mouse, xdest, ydest):
+	    #find the current position of the mouse
+	    xorig, yorig = mouse.position()
+	    xDir = 1 # 'right'
+	    yDir = 1 # 'down'
+	    done = False
+	    if xorig > xdest:
+	        # we're to the right and need to decriment
+	        xDir = -1 # 'left'
+	    if yorig > ydest:
+	        # we're below and will need to decriment
+	        yDir = -1 # 'up'
+	    while not done:
+	        # move y
+	        if yorig != ydest:
+	            yorig = yorig + yDir
+	            mouse.move(xorig, yorig)
+	        # move x
+	        if xorig != xdest:
+	            xorig = xorig + xDir
+	            mouse.move(xorig, yorig)
+	        time.sleep(.001)      
+	        # test if done
+	        if xorig == xdest and yorig == ydest:
+	            done = True
+
 		

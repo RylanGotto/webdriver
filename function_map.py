@@ -1,7 +1,7 @@
 import pydriver as dd
 import time
 
-pd = dd.WebDriver(1024, 748, '10.0.112.4/HiPM')
+pd = dd.WebDriver('10.0.112.4/HiPM')
 
 funcs = {
 			'click_text_link':pd.click_text_link,
