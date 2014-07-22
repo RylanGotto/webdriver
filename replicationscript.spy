@@ -1,0 +1,16 @@
+create_browser, firefox
+submit_text_field, USER_IDENT, superuser
+submit_text_field, _MYPW, 5*Hotel
+click_text_link, Manage the system
+click_text_link, Maintenance
+click_text_link, Database replication
+click_button, SUBMIT-ADD.x
+entry_text_field, address, 10.0.111.102
+click_button_by_value, Continue
+select_dropdown_option, mode, Enabled
+wait, 2.0
+click_button_by_value, Add
+click_button, SUBMIT-SELECT-WIN-GSTV5EG2TPJ_default
+select_dropdown_option, mode, Enabled
+click_button_by_value, Update
+click_button, SUBMIT-RELOAD

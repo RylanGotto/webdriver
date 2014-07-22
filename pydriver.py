@@ -37,10 +37,11 @@ class WebDriver:
 	def submit_text_field(self, args):
 		self.jquery_highlight_inject1()
 		field = self.driver.find_element_by_name(args[0])
+		self.move_mouse_and_click(field)
 		field.send_keys(args[1])
 		field.send_keys(Keys.ENTER)
 		time.sleep(1)
-		
+
 	def entry_text_field(self, args):
 		self.jquery_highlight_inject1()
 		field = self.driver.find_element_by_name(args[0])
@@ -60,8 +61,10 @@ class WebDriver:
 		check_box = self.driver.find_element_by_name(args[0])
 		check_box.click()
 
-	def get_element_by_text(self, search_term):
-		return self.driver.find_elements_by_xpath("//*[contains(text(), %s)]" % search_term)
+	# Does not seem to work?
+	def select_element_by_text(self, search_term):
+		tr = self.driver.find_elements_by_xpath("//*[contains(text(), '%s')]" % search_term)
+		tr.click()
 
 	def get_element_by_tab_index(self, index):
 		pass
@@ -69,6 +72,9 @@ class WebDriver:
 	def select_dropdown_option(self, args):
 		dropdown = self.driver.find_element_by_name(args[0])
 		dropdown.send_keys(args[1])
+
+	def select_dropdown_option_click(self, args):
+		find_element_by_css_selector("select[name='%s'] > option[value='%s']" % (args[0], args[1])).click()
 		
 	def jquery_highlight_inject(self):
 		self.driver.execute_script(" $('a').click(function(){ $(this).css('background','none'); $(this).css({'background-color': 'yellow', 'display':'block', 'box-shadow':'0 0 10px 10px #FFF700', 'z-index':'9999'}); }); ")
@@ -81,8 +87,27 @@ class WebDriver:
 
 	def click_button_by_value(self, args):
 		self.jquery_highlight_inject()
-		dd = self.driver.find_elements_by_xpath("//*[@value='Update']")
+		dd = self.driver.find_elements_by_xpath("//*[@value='%s']" % args[0])
+		# findabsoluteposition(dd)
 		dd.pop().click()
+
+	def move_mouse_and_click(self, element):
+		btnlocation = self.findabsoluteposition(element)
+		mouse = PyMouse();
+		self.moveslow(mouse, btnlocation[0], btnlocation[1])
+		mouse.click(btnlocation[0], btnlocation[1])
+
+
+	def findabsoluteposition(self, element):
+		viewportwidth = self.driver.execute_script("return document.documentElement.clientWidth")
+		viewportheight = self.driver.execute_script("return document.documentElement.clientHeight")
+		windowposition = self.driver.get_window_position()
+		print windowposition
+		windowsize = self.driver.get_window_size()
+		print "Window pos: %s, Window size: %s, View Height: %s, Elem Loc: %s, Elem Height: %s" % (windowposition['y'], windowsize['height'],viewportheight, element.location['y'], element.size['height'])
+		yvalue = windowposition['y'] + (windowsize['height'] - viewportheight) + element.location['y'] + element.size['height']*2
+		xvalue = element.location['x'] + element.size['width']/2
+		return (xvalue, yvalue)
 
 	# let's get some helper functions up in this biatch
 	def moveslow(self, mouse, xdest, ydest):

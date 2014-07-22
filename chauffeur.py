@@ -1,9 +1,15 @@
 import function_map as ft
 import time
+import sys
 
 def func_map():
 
-	file = open('script.spy','r')
+	if len(sys.argv) >= 2:
+		theScript = sys.argv[1]
+	else:
+		theScript = 'script.spy'
+
+	file = open(theScript,'r')
 
 	for i in file:
 		desc = [x.strip() for x in i.split(',')]
